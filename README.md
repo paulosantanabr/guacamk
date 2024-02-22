@@ -24,3 +24,16 @@ cmk_notification_deletehosts.sh - Delete hosts using a notification
 
 
       ./files/
+
+=================================================
+Create a folder called guacamk
+
+Create a file called guacamk.sh
+
+
+
+
+
+
+
+
