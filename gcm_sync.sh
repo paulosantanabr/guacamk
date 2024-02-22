@@ -1,5 +1,10 @@
 #!/bin/bash
 
+start=$SECONDS
+
+
+
+
 #1 - Autenticacao
 
 #Apache Guacamole
@@ -44,6 +49,14 @@ echo NOT on Checkmk - Connection ID: $connectionid Name: $name $ip $protocol
 ./cmk_createhosts.sh $connectionid $name $ip $protocol > ./logs/mklog_$name.log
 fi
 done < "$filename"
+
+end=$SECONDS
+duration=$((end - start))
+echo "Execution time: $duration seconds"
+
+
+
+exit
 echo ===================================================
 echo 5 - Activate changes on Checkmk
 ./cmk_activatechanges.sh
