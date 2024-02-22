@@ -16,6 +16,7 @@ echo $GUACAMOLESERVER
 echo ====================================================
 echo 1 - Retrieving connection ids from Apache Guacamole
 curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connections?token=$TOKEN | jq | grep -o '"identifier":\s*"[0-9]\+"' | tr -d '"identifier": ' > ./files/gcm_ids.file
+curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connectionGroups/ROOT/tree?token=$TOKEN | jq
 echo ====================================================
 echo 2 - Retrieving connection details from Apache Guacamole
 filename="./files/gcm_ids.file"
