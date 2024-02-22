@@ -16,14 +16,13 @@ echo $GUACAMOLESERVER
 echo ====================================================
 echo 1 - Retrieving connection ids from Apache Guacamole
 curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connections?token=$TOKEN | jq | grep -o '"identifier":\s*"[0-9]\+"' | tr -d '"identifier": ' > ./files/gcm_ids.file
-curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connectionGroups/ROOT/tree?token=$TOKEN | jq
 echo ====================================================
 echo 2 - Retrieving connection details from Apache Guacamole
 filename="./files/gcm_ids.file"
 while IFS= read -r CONNECTIONID;
 do
 CHECKCONNECTIONID=$(curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connections/$CONNECTIONID?token=$TOKEN | jq .name | tr -d '"' )
-CHECKCONNECTIONPROTOCOL=$(curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connection s/$CONNECTIONID?token=$TOKEN | jq .protocol | tr -d '"')
+CHECKCONNECTIONPROTOCOL=$(curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connections/$CONNECTIONID?token=$TOKEN | jq .protocol | tr -d '"')
 CHECKCONNECTIONIP=$(curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connections/$CONNECTIONID/parameters?token=$TOKEN | jq .hostname | tr -d '"')
 echo $CONNECTIONID,$CHECKCONNECTIONID,$CHECKCONNECTIONIP,$CHECKCONNECTIONPROTOCOL >> ./files/gcm_connections.file
 done < "$filename"
