@@ -22,10 +22,18 @@ Installation
 
       ./guacamk
       ./guacamk/files
+      .guacamk/logs
 
-  cmk_gethosts.cmk
+  
   gcm_connections.mk
   gcm_sync.mk
+
+
+  cmk_gethosts.cmk - Retrieve Hosts from Checkmk
+  cmk_createhosts.cmk - Create new hosts into Checkmk
+
+
+  
   
 cmk_notification_deletehosts.sh - Delete hosts using a notification
 
