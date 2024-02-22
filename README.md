@@ -16,6 +16,9 @@ First Step
 
     Folder Structure
 
+      ./guacamk
+      ./guacamk/files
+
   cmk_gethosts.cmk
   gcm_connections.mk
   gcm_sync.mk
