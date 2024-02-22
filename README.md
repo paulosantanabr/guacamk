@@ -2,6 +2,10 @@
 Integration Between Checkmk and Apache Guacamole for Monitoring of the Server and Connections
 
 
+Requiriments
+  checkmk 2.2+ (Raw/Enterprise/Cloud)
+  jq
+
 
 First Step
 
