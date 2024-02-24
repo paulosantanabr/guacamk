@@ -1,28 +1,35 @@
 #!/bin/bash
 
+
+#0 - Calculate Execution Time
 start=$SECONDS
 
-
-
-
-#1 - Autenticacao
-
+#0 - Credentials
 #Apache Guacamole
-GUACAMOLESERVER=REPLACE
-#Username
-#Password
+GCMSERVER=
+GCMUSR=
+GCMPWD=
 
 #Checkmk
-#Username
-#Password
+CMKUSR=
+CMKPWD=
 
-export TOKEN=$(curl -s -k -X POST  https://$GUACAMOLESERVER/api/tokens -d 'username=guacadmin&password=pa55wrd' | jq -r .authToken)
-echo $GUACAMOLESERVER
+#1 - Authentication
+export TOKEN=$(curl -s -k -X POST  https://$GCMSERVER/api/tokens -d 'username='$GCMUSR'&password='$GCMPWD'' | jq -r .authToken)
 echo ====================================================
-echo 1 - Retrieving connection ids from Apache Guacamole
-curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connections?token=$TOKEN | jq | grep -o '"identifier":\s*"[0-9]\+"' | tr -d '"identifier": ' > ./files/gcm_ids.file
+
+#2 - Retrieve connection ids from Apache Guacamole
+curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/connections?token=$TOKEN | jq | grep -o '"identifier":\s*"[0-9]\+"' | tr -d '"identifier": ' > ./files/gcm_ids.file
+export IDCOUNT=$(wc -l ./files/gcm_ids.file)
+echo Collected IDs: $IDCOUNT
+head -n 300 ./files/gcm_ids.file > ./files/gcm_ids_0_300.file
+tail -n +301 ./files/gcm_ids.file > ./files/gcm_ids_301+.file
 echo ====================================================
-echo 2 - Retrieving all connections details from Apache Guacamole
+#3 - Retrieving all connections details from Apache Guacamole
+
+
+
+
 curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connections?token=$TOKEN | jq > ./files/gcm.json
 filename="./files/gcm_ids.file"
 while IFS= read -r CONNECTIONID;
@@ -33,6 +40,15 @@ CHECKCONNECTIONIP=$(curl -s -k -X GET -H 'Content-Type: application/json' https:
 echo $CONNECTIONID,$CHECKCONNECTIONID,$CHECKCONNECTIONIP,$CHECKCONNECTIONPROTOCOL >> ./files/gcm_connections.file
 done < "$filename"
 echo ====================================================
+
+
+
+
+
+
+
+
+
 echo 3 - Retrieving current hosts from Checkmk
 ./cmk_gethosts.sh | grep id > ./files/cmk_hosts.file
 echo ====================================================
