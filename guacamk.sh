@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #0 - Calculate Execution Time
 start=$SECONDS
 
@@ -25,12 +24,17 @@ echo Collected IDs: $IDCOUNT
 head -n 300 ./files/gcm_ids.file > ./files/gcm_ids_0_300.file
 tail -n +301 ./files/gcm_ids.file > ./files/gcm_ids_301+.file
 echo ====================================================
-#3 - Retrieving all connections details from Apache Guacamole
+
+#3 - Retrieving connections details (Hostname and Connection Protocol) from Apache Guacamole
+curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/connections?token=$TOKEN | jq > ./files/gcm.json
+
+#4 - Retrieve Connection Details with IP Addresses
+echo ./gcmdetails.sh $GCMSERVER $GCMUSR $GCMPWD
+wait
 
 
 
 
-curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connections?token=$TOKEN | jq > ./files/gcm.json
 filename="./files/gcm_ids.file"
 while IFS= read -r CONNECTIONID;
 do
