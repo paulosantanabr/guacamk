@@ -9,8 +9,15 @@ Requiriments
 
 First Step
 
-  Connect to Apache Guacamole to retrieve connections:
 
+  1 - Apache Guacamole - Authentication
+  2 - Apache Guacamole - Retrieve Connection IDs
+  3 - Apache Guacamole - Retrieve Connection Details
+  4 - Apache Guacamole - Retrieve Connection Details with IP Addresses
+  5 - Checkmk - Retrieve hosts
+  6 - Checkmk - Create new hosts
+  7 - Checkmk - Activate Changes
+  8 - Cleanup files
 
 
 
