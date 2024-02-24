@@ -36,18 +36,10 @@ echo "Execution time: $duration seconds"
 #5 - Retrieving current hosts from Checkmk
 ./cmk_gethosts.sh $CMKSERVER $CMKSITE $CMKUSR $CMKPWD $ | grep id > ./files/cmk_hosts.file
 
-#6
+#6 - Create connections on Checkmk
 
-
-
-
-
-
-echo ====================================================
-echo 4 - Create connections on Checkmk
 
 filename="./files/gcm_connections.file"
-
 while IFS=',' read -r connectionid name ip protocol; do
 if grep -q "$name" ./files/cmk_hosts.file
 then
