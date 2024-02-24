@@ -29,7 +29,4 @@ CHECKCONNECTIONPROTOCOL=$(cat ./files/gcm.json | jq --arg CONNECTIONID "$CONNECT
 CHECKCONNECTIONIP=$(curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/connections/$CONNECTIONID/parameters?token=$TOKEN | jq .hostname | tr -d '"')
 echo $CONNECTIONID,$CHECKCONNECTIONID,$CHECKCONNECTIONIP,$CHECKCONNECTIONPROTOCOL >> ./files/gcm_connections.file
 echo $CONNECTIONID,$CHECKCONNECTIONID,$CHECKCONNECTIONIP,$CHECKCONNECTIONPROTOCOL
-end=$SECONDS
-duration=$((end - start))
-echo "Execution time: $duration seconds"
 done < "$filename"
