@@ -2,12 +2,12 @@
 
 # NOTE: We recommend all shell users to use the "httpie" examples instead.
 
-HOST_NAME="localhost:8000"
-SITE_NAME="cmk"
+HOST_NAME=$1
+SITE_NAME=$2
 API_URL="http://$HOST_NAME/$SITE_NAME/check_mk/api/1.0"
 
-USERNAME="cmkadmin"
-PASSWORD="pa55wrd"
+USERNAME=$3
+PASSWORD=$4
 
 out=$(
   curl \
