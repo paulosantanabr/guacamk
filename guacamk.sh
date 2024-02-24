@@ -32,6 +32,9 @@ curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/ses
 ./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_0_500.file &
 ./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_501+.file &
 wait
+end=$SECONDS
+duration=$((end - start))
+echo "Execution time: $duration seconds"
 
 
 
