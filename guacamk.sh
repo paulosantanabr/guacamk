@@ -9,6 +9,7 @@ GCMPWD=
 #Checkmk
 CMKUSR=
 CMKPWD=
+CMKSERVER=
 CMKSITE=
 
 #1 - Authentication
@@ -33,12 +34,9 @@ duration=$((end - start))
 echo "Execution time: $duration seconds"
 
 #5 - Retrieving current hosts from Checkmk
-./cmk_gethosts.sh | grep id > ./files/cmk_hosts.file
+./cmk_gethosts.sh $CMKSERVER $CMKSITE $CMKUSR $CMKPWD $ | grep id > ./files/cmk_hosts.file
 
-
-
-
-
+#6
 
 
 
