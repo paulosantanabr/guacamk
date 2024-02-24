@@ -12,7 +12,6 @@ CMKPWD=
 
 #1 - Authentication
 export TOKEN=$(curl -s -k -X POST  https://$GCMSERVER/api/tokens -d 'username='$GCMUSR'&password='$GCMPWD'' | jq -r .authToken)
-echo ====================================================
 
 #2 - Retrieve connection ids from Apache Guacamole
 curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/connections?token=$TOKEN | jq | grep -o '"identifier":\s*"[0-9]\+"' | tr -d '"identifier": ' > ./files/gcm_ids.file
@@ -20,7 +19,6 @@ export IDCOUNT=$(wc -l ./files/gcm_ids.file)
 echo Collected IDs: $IDCOUNT
 head -n 300 ./files/gcm_ids.file > ./files/gcm_ids_0_500.file
 tail -n +301 ./files/gcm_ids.file > ./files/gcm_ids_501+.file
-echo ====================================================
 
 #3 - Retrieving connections details (Hostname and Connection Protocol) from Apache Guacamole
 curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/connections?token=$TOKEN | jq > ./files/gcm.json
@@ -33,25 +31,19 @@ end=$SECONDS
 duration=$((end - start))
 echo "Execution time: $duration seconds"
 
-
-
-
-
-
-
-
-echo ====================================================
-
-
-
-
-
-
-
-
-
-echo 3 - Retrieving current hosts from Checkmk
+#5 - Retrieving current hosts from Checkmk
 ./cmk_gethosts.sh | grep id > ./files/cmk_hosts.file
+
+
+
+
+
+
+
+
+
+
+
 echo ====================================================
 echo 4 - Create connections on Checkmk
 
