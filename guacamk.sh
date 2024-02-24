@@ -54,19 +54,15 @@ end=$SECONDS
 duration=$((end - start))
 echo "Execution time: $duration seconds"
 
-
-
-exit
-echo ===================================================
-echo 5 - Activate changes on Checkmk
+#7 - Activate changes on Checkmk
 ./cmk_activatechanges.sh
-echo ====================================================
-echo 6 -Cleanup
-echo Removing gcm_ids.file
+
+#8 - Cleanup
 rm ./files/gcm_ids.file
-echo Removing gcm_connections.file
 rm ./files/gcm_connections.file
-echo Removing cmk_hosts.file
 rm ./files/cmk_hosts.file
-echo ====================================================
-exit
+rm ./files/gcm_ids_0_500.file
+rm ./files/gcm_ids_501+.file
+rm ./files/gcm_connections_vnc.file
+rm ./files/gcm_connections_ssh.file
+rm ./files/gcm.json
