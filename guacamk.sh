@@ -21,16 +21,16 @@ echo ====================================================
 curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/connections?token=$TOKEN | jq | grep -o '"identifier":\s*"[0-9]\+"' | tr -d '"identifier": ' > ./files/gcm_ids.file
 export IDCOUNT=$(wc -l ./files/gcm_ids.file)
 echo Collected IDs: $IDCOUNT
-head -n 300 ./files/gcm_ids.file > ./files/gcm_ids_0_300.file
-tail -n +301 ./files/gcm_ids.file > ./files/gcm_ids_301+.file
+head -n 300 ./files/gcm_ids.file > ./files/gcm_ids_0_500.file
+tail -n +301 ./files/gcm_ids.file > ./files/gcm_ids_501+.file
 echo ====================================================
 
 #3 - Retrieving connections details (Hostname and Connection Protocol) from Apache Guacamole
 curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/connections?token=$TOKEN | jq > ./files/gcm.json
 
 #4 - Retrieve Connection Details with IP Addresses
-./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_0_300.file &
-./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_301+.file &
+./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_0_500.file &
+./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_501+.file &
 wait
 
 
