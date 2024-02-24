@@ -29,8 +29,9 @@ echo ====================================================
 curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/connections?token=$TOKEN | jq > ./files/gcm.json
 
 #4 - Retrieve Connection Details with IP Addresses
-./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_0_300.file
-./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_301+.file
+./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_0_300.file &
+./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_301+.file &
+wait
 
 
 
