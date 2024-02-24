@@ -9,6 +9,7 @@ GCMPWD=
 #Checkmk
 CMKUSR=
 CMKPWD=
+CMKSITE=
 
 #1 - Authentication
 export TOKEN=$(curl -s -k -X POST  https://$GCMSERVER/api/tokens -d 'username='$GCMUSR'&password='$GCMPWD'' | jq -r .authToken)
