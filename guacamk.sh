@@ -30,7 +30,7 @@ curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/ses
 
 #4 - Retrieve Connection Details with IP Addresses
 ./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_0_300.file
-
+./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_301+.file
 
 
 
