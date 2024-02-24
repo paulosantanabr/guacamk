@@ -30,3 +30,8 @@ CHECKCONNECTIONIP=$(curl -s -k -X GET -H 'Content-Type: application/json' https:
 echo $CONNECTIONID,$CHECKCONNECTIONID,$CHECKCONNECTIONIP,$CHECKCONNECTIONPROTOCOL >> ./files/gcm_connections.file
 echo $CONNECTIONID,$CHECKCONNECTIONID,$CHECKCONNECTIONIP,$CHECKCONNECTIONPROTOCOL
 done < "$filename"
+
+cat ./files/gcm_connections.file | grep vnc > ./files/gcm_connections_vnc.file
+wc -l ./files/gcm_connections_vnc.file
+cat ./files/gcm_connections.file | grep ssh > ./files/gcm_connections_ssh.file
+wc -l ./files/gcm_connections_ssh.file
