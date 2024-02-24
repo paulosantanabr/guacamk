@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#0 - Calculate Execution Time
-start=$SECONDS
-
 #0 - Credentials
 #Apache Guacamole
 GCMSERVER=
