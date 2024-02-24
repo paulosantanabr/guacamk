@@ -29,20 +29,16 @@ echo ====================================================
 curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/connections?token=$TOKEN | jq > ./files/gcm.json
 
 #4 - Retrieve Connection Details with IP Addresses
-echo ./gcmdetails.sh $GCMSERVER $GCMUSR $GCMPWD
-wait
+./gcm_details.sh $GCMSERVER $GCMUSR $GCMPWD ./files/gcm_ids_0_300.file
 
 
 
 
-filename="./files/gcm_ids.file"
-while IFS= read -r CONNECTIONID;
-do
-CHECKCONNECTIONID=$(cat ./files/gcm.json | jq --arg CONNECTIONID "$CONNECTIONID" '.[$CONNECTIONID].name' | tr -d '"')
-CHECKCONNECTIONPROTOCOL=$(cat ./files/gcm.json | jq --arg CONNECTIONID "$CONNECTIONID" '.[$CONNECTIONID].protocol' | tr -d '"')
-CHECKCONNECTIONIP=$(curl -s -k -X GET -H 'Content-Type: application/json' https://$GUACAMOLESERVER/api/session/data/postgresql/connections/$CONNECTIONID/parameters?token=$TOKEN | jq .hostname | tr -d '"')
-echo $CONNECTIONID,$CHECKCONNECTIONID,$CHECKCONNECTIONIP,$CHECKCONNECTIONPROTOCOL >> ./files/gcm_connections.file
-done < "$filename"
+
+
+
+
+
 echo ====================================================
 
 
