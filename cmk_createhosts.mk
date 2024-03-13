@@ -26,6 +26,7 @@ out=$(
           "attributes": {
             "ipaddress": "'$ip'",
             "labels": {
+            "guaca_id": "'$connectionid'",
             "guaca_protocol": "'$protocol'"
           }
           },
