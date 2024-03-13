@@ -1,14 +1,13 @@
 # guacamk
 Integration Between Checkmk and Apache Guacamole for Monitoring of the Server and Connections
 
+Requirements:
+  - checkmk 2.2+ (Raw/Enterprise/Cloud)
+  - jq
 
-Requiriments
-  checkmk 2.2+ (Raw/Enterprise/Cloud)
-  jq
 
 
-First Step
-
+Understanding the process:
 
   1 - Apache Guacamole - Authentication
   2 - Apache Guacamole - Retrieve Connection IDs
