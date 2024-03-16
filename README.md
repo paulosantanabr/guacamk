@@ -20,6 +20,10 @@ Understanding the process:
 
 
 
+
+![image](https://github.com/pauloadrianodotcom/guacamk/assets/121560100/534fd4bf-1d40-4042-9dde-969eef678af2)
+
+
 Installation
 
  gethosts.mk
