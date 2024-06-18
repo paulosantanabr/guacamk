@@ -7,7 +7,7 @@ gcm_usr=
 gcm_pwd=
 
 passwordgeneration() {
-gcm_pwd=$(echo Gcm!$1123@789)
+gcm_pwd=$(echo Gcm!$1#!)
 echo $gcm_pwd
 }
 
