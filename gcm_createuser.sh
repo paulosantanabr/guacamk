@@ -9,6 +9,7 @@
 #Logs
 #/var/log/guacamk-retrieveconnectionids.log
 #/var/log/guacamk-createuser.log
+#/var/log/guacamk-creategroup.log
 
 loadcred () {
 source cred.file
@@ -26,10 +27,49 @@ export IDCOUNT=$(wc -l /tmp/gcm_ids.file)
 echo $date / Collected IDs: $IDCOUNT >> /var/log/guacamk-retrieveconnectionids.log
 }
 
+retrieveconnectiondetails() {
+curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/connections?token=$TOKEN | jq > /tmp/gcm.json
+}
+
+readpermissiongroupnames() {
+filename=/tmp/gcm_ids.file
+while IFS= read -r CONNECTIONID;
+do
+cat /tmp/gcm.json | jq --arg CONNECTIONID "$CONNECTIONID" '.[$CONNECTIONID].name' | tr -d '"' | cut -c 5-12 >> /tmp/gcm_permissions.file
+done < "$filename"
+}
+
+removerepetitiveentries() {
+cat -n /tmp/gcm_permissions.file | sort -uk2 | sort -nk1 | cut -f2- >> /tmp/gcm_permissions2.file
+rm /tmp/gcm_permissions.file
+mv /tmp/gcm_permissions2.file /tmp/gcm_permissions.file
+}
+
 createuser() {
 gcm_status=$(curl -s -k -X POST -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/users?token=$TOKEN --data-binary '{"username":"'"$gcm_usr"'","password":"'"$gcm_pwd"'","attributes":{}}')
 #date=$(date '+%Y-%m-%d %H:%M:%S')
 echo $date / User: $gcm_usr / Password: $gcm_pwd / Status: $gcm_status >> /var/log/guacamk-createuser.log
+}
+
+creategroup() {
+filename=/tmp/gcm_permissions.file
+while IFS= read -r GROUPNAME;
+do
+gcm_status=$(curl -s -k -X POST -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/userGroups?token=$TOKEN --data-binary '{"identifier":"'"$GROUPNAME"'","parameters": {},"attributes":{}}')
+echo $date / Group: $GROUPNAME / Status: $gcm_status >> /var/log/guacamk-creategroup.log
+done < "$filename"
+}
+
+assigngrouppermission() {
+filename=/tmp/gcm_ids.file
+while IFS= read -r CONNECTIONID;
+do
+CHECKCONNECTIONID=$(cat /tmp/gcm.json | jq --arg CONNECTIONID "$CONNECTIONID" '.[$CONNECTIONID].name' | tr -d '"' | cut -c 5-12)
+CHECKNAME=$(cat /tmp/gcm.json | jq --arg CONNECTIONID "$CONNECTIONID" '.[$CONNECTIONID].name' | tr -d '"')
+CHECKCONNECTIONPARENTID=$(cat /tmp/gcm.json | jq --arg CONNECTIONID "$CONNECTIONID" '.[$CONNECTIONID].parentIdentifier' | tr -d '"')
+curl -s -k -X PATCH -H 'Content-Type: application/json' -H 'Accept: application/json' https://$GCMSERVER/api/session/data/postgresql/userGroups/$CHECKCONNECTIONID/permissions?token=$TOKEN -d '[ { "op": "add","path": "/connectionPermissions/'$CONNECTIONID'","value": "READ"} ]'
+curl -s -k -X PATCH -H 'Content-Type: application/json' -H 'Accept: application/json' https://$GCMSERVER/api/session/data/postgresql/userGroups/$CHECKCONNECTIONID/permissions?token=$TOKEN -d '[ { "op": "add","path": "/connectionGroupPermissions/'$CHECKCONNECTIONPARENTID'","value": "READ"} ]'
+done < "$filename"
 }
 
 passwordgeneration() {
@@ -40,5 +80,10 @@ gcm_pwd=$(echo Gcm!$1123@789)
 loadcred
 authentication
 retrieveconnectionids
+retrieveconnectiondetails
+readpermissiongroupnames
+removerepetitiveentries
+creategroup
+assigngrouppermission
 passwordgeneration $1
 createuser
