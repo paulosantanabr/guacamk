@@ -17,7 +17,6 @@ source cred.file
 
 authentication() {
 export TOKEN=$(curl -s -k -X POST  https://$GCMSERVER/api/tokens -d 'username='$GCMUSR'&password='$GCMPWD'' | jq -r .authToken)
-echo $TOKEN
 }
 
 date=$(date '+%Y-%m-%d %H:%M:%S')
@@ -47,9 +46,12 @@ mv /tmp/gcm_permissions2.file /tmp/gcm_permissions.file
 }
 
 createuser() {
+filename=/tmp/gcm_permissions.file
+while IFS= read -r gcm_usr;
+do
 gcm_status=$(curl -s -k -X POST -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/users?token=$TOKEN --data-binary '{"username":"'"$gcm_usr"'","password":"'"$gcm_pwd"'","attributes":{}}')
-#date=$(date '+%Y-%m-%d %H:%M:%S')
 echo $date / User: $gcm_usr / Password: $gcm_pwd / Status: $gcm_status >> /var/log/guacamk-createuser.log
+done < "$filename"
 }
 
 creategroup() {
@@ -94,6 +96,6 @@ readpermissiongroupnames
 removerepetitiveentries
 creategroup
 assigngrouppermission
+createuser
 assignuserpermission
 passwordgeneration $1
-createuser
