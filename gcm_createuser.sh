@@ -17,6 +17,7 @@ source cred.file
 
 authentication() {
 export TOKEN=$(curl -s -k -X POST  https://$GCMSERVER/api/tokens -d 'username='$GCMUSR'&password='$GCMPWD'' | jq -r .authToken)
+echo $TOKEN
 }
 
 date=$(date '+%Y-%m-%d %H:%M:%S')
@@ -72,6 +73,14 @@ curl -s -k -X PATCH -H 'Content-Type: application/json' -H 'Accept: application/
 done < "$filename"
 }
 
+assignuserpermission() {
+filename=/tmp/gcm_permissions.file
+while IFS= read -r GROUPNAME;
+do
+curl -s -k -X PATCH -H 'Content-Type: application/json' -H 'Accept: application/json' https://$GCMSERVER/api/session/data/postgresql/userGroups/"$GROUPNAME"/memberUsers?token=$TOKEN -d '[ { "op": "add","path": "/","value": "'"$GROUPNAME"'"} ]'
+done < "$filename"
+}
+
 passwordgeneration() {
 gcm_usr=$(echo $1)
 gcm_pwd=$(echo Gcm!$1123@789)
@@ -85,5 +94,6 @@ readpermissiongroupnames
 removerepetitiveentries
 creategroup
 assigngrouppermission
+assignuserpermission
 passwordgeneration $1
 createuser
