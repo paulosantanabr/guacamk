@@ -11,6 +11,15 @@
 #/var/log/guacamk-createuser.log
 #/var/log/guacamk-creategroup.log
 
+#Debuging
+#tail -f /var/log/guacamk-*
+
+#Crontab
+#crontab -e
+#* * * * * /home/bitnami/gcm
+
+cd /home/bitnami/
+
 loadcred () {
 source cred.file
 }
