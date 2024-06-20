@@ -93,7 +93,6 @@ done < "$filename"
 }
 
 passwordgeneration() {
-gcm_usr=$(echo $1)
 gcm_pwd=$(echo Gcm!$1123@789)
 }
 
@@ -107,4 +106,3 @@ creategroup
 assigngrouppermission
 createuser
 assignuserpermission
-passwordgeneration $1
