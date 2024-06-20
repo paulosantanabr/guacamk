@@ -57,6 +57,7 @@ createuser() {
 filename=/tmp/gcm_permissions.file
 while IFS= read -r gcm_usr;
 do
+passwordgeneration $gcm_usr
 gcm_status=$(curl -s -k -X POST -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/users?token=$TOKEN --data-binary '{"username":"'"$gcm_usr"'","password":"'"$gcm_pwd"'","attributes":{}}')
 echo $date / User: $gcm_usr / Password: $gcm_pwd / Status: $gcm_status >> /var/log/guacamk-createuser.log
 done < "$filename"
