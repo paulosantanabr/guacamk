@@ -5,7 +5,6 @@
 #passwordgeneration=Generare a unique password
 #assignpermission=Assign permissions to users
 
-
 #Logs
 #/var/log/guacamk-retrieveconnectionids.log
 #/var/log/guacamk-createuser.log
