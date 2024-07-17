@@ -3,6 +3,11 @@
 #0 - Credentials
 #Apache Guacamole
 
+loadcred () {
+source cred.file
+}
+
+loadcred
 
 
 #CONNECTIONID=$NOTIFY_HOSTLABEL_gcm_id
