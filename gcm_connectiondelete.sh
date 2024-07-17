@@ -14,6 +14,9 @@ loadcred
 CONNECTIONID=$NOTIFY_HOSTLABEL_gcm_id
 PARENTID=$NOTIFY_HOSTLABEL_gcm_parentid
 
+#CONNECTIONID=5503
+#PARENTID=1291
+
 #echo $GCMSERVER $GCMUSR GCMPWD $CONNECTIONID
 
 #1 - Authentication
@@ -34,7 +37,6 @@ if [[ "$CHECKGROUP" == *"childConnection"* ]]; then
   curl -s -k -X DELETE https://$GCMSERVER/api/session/data/postgresql/connectionGroups/$PARENTID?token=$TOKEN
   #echo $CHECKGROUP
 fi
-
 
 echo Hostname: $NOTIFY_HOSTNAME / gcm_id: $NOTIFY_HOSTLABEL_gcm_id / gcm_parentid: $NOTIFY_HOSTLABEL_gcm_parentid / Action: DELETE / Integration: Apache Guacamole / Status: $cmk_delete / Group Status: $GROUPREMOVAL >> /var/log/guacamk-deleteconnection.log
 echo Hostname: $NOTIFY_HOSTNAME / gcm_id: $NOTIFY_HOSTLABEL_gcm_id / gcm_parentid: $NOTIFY_HOSTLABEL_gcm_parentid / Action: DELETE / Integration: Apache Guacamole / Status: $cmk_delete / Group Status: $GROUPREMOVAL
