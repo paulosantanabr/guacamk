@@ -9,6 +9,7 @@
 #/var/log/guacamk-retrieveconnectionids.log
 #/var/log/guacamk-createuser.log
 #/var/log/guacamk-creategroup.log
+#/var/log/guacamk-deleteconnection.log
 
 #Debuging
 #tail -f /var/log/guacamk-*
