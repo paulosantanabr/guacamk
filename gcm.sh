@@ -10,6 +10,7 @@
 #/var/log/guacamk-createuser.log
 #/var/log/guacamk-creategroup.log
 #/var/log/guacamk-deleteconnection.log
+#/var/log/guacamk-collectids.log
 
 #Debuging
 #tail -f /var/log/guacamk-*
@@ -37,7 +38,6 @@ date=$(date '+%Y-%m-%d %H:%M:%S')
 retrieveconnectionids() {
 curl -s -k -X GET -H 'Content-Type: application/json' https://$GCMSERVER/api/session/data/postgresql/connections?token=$TOKEN | jq | grep -o '"identifier":\s*"[0-9]\+"' | tr -d '"identifier": ' > /tmp/gcm_ids.file
 export IDCOUNT=$(wc -l /tmp/gcm_ids.file)
-echo $date / Collected IDs: $IDCOUNT >> /var/log/guacamk-retrieveconnectionids.log
 }
 
 retrieveconnectiondetails() {
@@ -107,6 +107,10 @@ duration=$((end - start))
 echo "Execution time: $duration seconds"
 }
 
+logging() {
+echo Date: $date / Tool: Apache Guacamole / Integration: Collect IDs / Duration: $duration / Collected IDs: $IDCOUNT >> /var/log/guacamk-collectids.log
+}
+
 loadcred
 authentication
 retrieveconnectionids
@@ -118,3 +122,4 @@ assigngrouppermission
 createuser
 assignuserpermission
 calculateduration
+logging
