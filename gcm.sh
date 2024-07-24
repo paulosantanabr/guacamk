@@ -102,6 +102,7 @@ gcm_pwd=$(echo Gcm!$1123@789)
 }
 
 calculateduration() {
+end=$SECONDS
 duration=$((end - start))
 echo "Execution time: $duration seconds"
 }
