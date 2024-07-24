@@ -20,6 +20,9 @@
 
 cd /home/bitnami/
 
+#Calculate Execution Time
+start=$SECONDS
+
 loadcred () {
 source cred.file
 }
@@ -97,6 +100,11 @@ passwordgeneration() {
 gcm_pwd=$(echo Gcm!$1123@789)
 }
 
+calculateduration() {
+duration=$((end - start))
+echo "Execution time: $duration seconds"
+}
+
 loadcred
 authentication
 retrieveconnectionids
@@ -107,3 +115,4 @@ creategroup
 assigngrouppermission
 createuser
 assignuserpermission
+calculateduration
