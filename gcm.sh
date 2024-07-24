@@ -10,7 +10,7 @@
 #/var/log/guacamk-createuser.log
 #/var/log/guacamk-creategroup.log
 #/var/log/guacamk-deleteconnection.log
-#/var/log/guacamk-collectids.log
+#/var/log/gcm-collectids.log
 
 #Debuging
 #tail -f /var/log/guacamk-*
@@ -108,7 +108,7 @@ echo "Execution time: $duration seconds"
 }
 
 logging() {
-echo Date: $date / Tool: Apache Guacamole / Integration: Collect IDs / Duration: $duration / Collected IDs: $IDCOUNT >> /var/log/guacamk-collectids.log
+echo Date: $date / Tool: Apache Guacamole / Integration: Collect IDs / Duration: $duration / Collected IDs: $IDCOUNT >> /var/log/gcm-collectids.log
 }
 
 loadcred
