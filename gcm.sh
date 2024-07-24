@@ -20,11 +20,12 @@
 
 cd /home/bitnami/
 
-#Calculate Execution Time
-start=$SECONDS
-
 loadcred () {
 source cred.file
+}
+
+executiontime() {
+start=$SECONDS
 }
 
 authentication() {
